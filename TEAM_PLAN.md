@@ -36,7 +36,7 @@ Project state, dataset facts and the exact file formats between workstreams are 
 | Thu 19 Nov | Drug-target ranking | Sidharth |
 | **Fri 20 Nov** | **Results freeze** (no new analyses after this) | all |
 | Sat 21 Nov | Each owner drafts their report sections | all |
-| Mon 23 Nov | Report assembled (≤ 8 pages) | Sidharth |
+| Mon 23 Nov | Report assembled (≤ 8 pages) | Vijay (reassigned from Sidharth, 2026-11-24) |
 | Tue 24 Nov | Formatting (Arial 11, single spacing), references, supplement (code + AI logs) | Eswar |
 | **Wed 25 Nov** | **Final report submitted** | Sidharth (backup Ruchir) |
 
@@ -58,7 +58,7 @@ Each of the four engineers owns one sprint workstream and one or two post-presen
 | `validation` | Ziegler claims check; Chua et al. cohort (stretch) | **Vijay** | `14_validation_ziegler.py`, `15_external_cohort.py` → `results/validation/` | C6, C7, C9, Eswar's table | Ziegler Mon 16 Nov; Chua Fri 20 Nov | post |
 | `targets` | Drug-target prioritisation (CONTEXT.md §7.4) | **Sidharth** | `13_targets.py` → **C13** | C9, C10, C11 | Thu 19 Nov | post |
 | `lit` (post) | External-table sources + tidy table; literature evidence for shortlist genes; report formatting + AI-log supplement | **Eswar** | `data/external/SOURCES.md`, `00_tidy_external.py` → **C10**; `docs/literature/key_gene_evidence.md`; formatted report | C9 for the gene table only | C10 Tue 10 Nov; evidence Fri 20 Nov; formatting Tue 24 Nov | post |
-| `report` | Report integration | **Sidharth** (lead), each owner writes their sections | report draft | everything | sections Sat 21 Nov; assembled Mon 23 Nov | post |
+| `report` | Report integration | **Vijay** (lead; reassigned from Sidharth, 2026-11-24), each owner writes their sections | report draft | everything | sections Sat 21 Nov; assembled Mon 23 Nov | post |
 
 **Reviewers** (each PR is reviewed by whoever consumes it): Vijay's QC → Sahaj · Sahaj's features → Ruchir · Ruchir's classifier → Vijay · Sidharth's ISG/deck → Ruchir · Eswar's → Sidharth.
 
@@ -90,8 +90,8 @@ Deck owner + backup + presenter(s): **to be decided by Sun 21:00** (proposal: ow
 
 ## 6. Per-person guide
 
-### Vijay (`klnsv`): `qc` → `sensitivity`, `validation`
-**You own:** the QC'd object everyone builds on (C1), the exploratory figures for slides 2–3, the reproducibility check of the sprint, and after the presentation the sensitivity analysis and validation.
+### Vijay (`klnsv`): `qc` → `sensitivity`, `validation`, `report`
+**You own:** the QC'd object everyone builds on (C1), the exploratory figures for slides 2–3, the reproducibility check of the sprint, and after the presentation the sensitivity analysis, validation and report assembly (reassigned from Sidharth, 2026-11-24).
 **First steps (Sat AM):**
 1. `git switch -c vijay/qc`. Write `scripts/01_qc.py` to the C1 spec (CONTEXT.md §6): `layers['counts']` from `raw.X`, recomputed `n_counts/n_genes/pct_mito`, required obs columns via `common.GROUP_MAP`, normalise + log1p, HVGs on host genes. Default: keep all author-QC'd cells (CONTEXT.md §5.3).
 2. Two figures from step 01: `01_qc_violins.png` (genes/UMIs/mito per group) and `01_donor_overview.png` (cells per donor coloured by group, n on plot). **Open the PR by 12:00** so Sahaj can review and it's merged by 13:00.
@@ -117,8 +117,8 @@ Deck owner + backup + presenter(s): **to be decided by Sun 21:00** (proposal: ow
 
 **Hand off:** C5 + `results/classify/figures/` → slides 7–8. `classify_utils.py` → Vijay (sensitivity) and Sidharth (perturbation). Its function signatures are a contract.
 
-### Sidharth (`sid-biowiz`): `isg` + `deck` → `perturb`, `targets`, `report`
-**You own:** tonight's setup, a knowledge-driven baseline (does Ziegler's interferon signature alone separate mild from severe?), the sprint deck draft, and after the presentation the perturbation analysis, drug-target ranking and report assembly.
+### Sidharth (`sid-biowiz`): `isg` + `deck` → `perturb`, `targets`
+**You own:** tonight's setup, a knowledge-driven baseline (does Ziegler's interferon signature alone separate mild from severe?), the sprint deck draft, and after the presentation the perturbation analysis and drug-target ranking (report assembly reassigned to Vijay, 2026-11-24).
 **First steps:**
 1. **Fri night:** make sure all four teammates are repo collaborators (the repo is private; Settings → Collaborators). Review and merge the scaffolding PR. Create Release `data-v1` with the h5ad (§9.2). Message the team when it's up.
 2. Sat AM: `git switch -c sidharth/isg-baseline`. Choose an ISG gene set (e.g. MSigDB Hallmark interferon-α response). Commit it to `data/external/gene_sets/` with its source in `data/external/SOURCES.md`. Write `scripts/06_isg_baseline.py`: per-cell ISG score → per-donor mean in epithelial types → mild vs severe (MWU, n). The score's AUROC needs no training, so it's an honest single-feature baseline for slide 8.
