@@ -269,7 +269,7 @@ Candidates = C9 shortlist genes with a meaningful perturbation effect (C11). Eac
 | Workstream | Owner | Status | Last updated |
 |---|---|---|---|
 | Scaffolding (docs, env, skeleton) | Sidharth + Claude | done, pending PR merge | 2026-10-30 |
-| qc (01–02) | Vijay | not started | 2026-10-30 |
+| qc (01–02) | Vijay | 01 merged (C1 + 2 figures); 02 done (PCA/UMAP/Leiden + ARI, 5 figures, branch `klnsv/pca-umap`, PR pending). Strong per-donor structure in UMAP | 2026-11-01 |
 | composition / features (03–04) | Sahaj | not started | 2026-10-30 |
 | classify (05) | Ruchir | not started | 2026-10-30 |
 | isg baseline (06) + deck integration | Sidharth | not started | 2026-10-30 |
