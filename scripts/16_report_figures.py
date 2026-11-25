@@ -1,17 +1,4 @@
-"""Step 16: compact multi-panel figures for the final report (reads result tables only).
 
-Reads:  results/classify/cv_metrics.tsv (C5), results/isg/isg_cv_metrics.tsv (step 06),
-        results/sensitivity/sensitivity_summary.tsv + downsampling_draws.tsv (C12),
-        results/de/enrichment_gsea.tsv (step 08), results/validation/ziegler_checks.tsv (step 14),
-        data/processed/nasal_qc.h5ad (C1, for the IFN-responsive ciliated fraction),
-        results/attribution/celltype_importance.tsv + single_type_null.tsv (C8),
-        results/perturb/perturbation_effects.tsv (C11), results/targets/target_ranking.tsv (C13)
-Writes: results/report/figures/fig2_classification.png
-        results/report/figures/fig3_interferon.png
-        results/report/figures/fig4_attribution_perturbation.png
-
-Run from the repo root: python scripts/16_report_figures.py
-"""
 import numpy as np
 import pandas as pd
 import anndata as ad
@@ -45,7 +32,7 @@ def fig_classification(out_path):
 
     fig, axes = plt.subplots(1, 3, figsize=(11, 3.6), gridspec_kw={"width_ratios": [1.1, 1.3, 1]})
 
-    # a: AUROC per feature set x model, plus the ISG single-score baseline
+
     ax = axes[0]
     labels, rows = [], []
     for _, r in cv.iterrows():
@@ -69,7 +56,7 @@ def fig_classification(out_path):
     clean(ax)
     panel_label(ax, "a")
 
-    # b: key sensitivity settings, composition + RF
+
     ax = axes[1]
     picks = [("A", "primary (WHO 1-5 vs 6-8)"), ("A", "WHO <=5 vs >=7 (drop WHO 6)"), ("A", "WHO <=4 vs 8 (extremes)"),
              ("D", "exclude bloody-swab donors"), ("D", "cells with pct_mito < 20% (recomputed)"),
@@ -99,10 +86,10 @@ def fig_classification(out_path):
     clean(ax)
     panel_label(ax, "b")
 
-    # c: cells per patient
+
     ax = axes[2]
     colors = {"comp/rf": BLUE, "pb_all/logreg": AQUA, "comb/rf": YELLOW}
-    depths = sorted(draws["cells_per_donor"].unique())     # 50, 100, 200, then "all" (stored as 1e7)
+    depths = sorted(draws["cells_per_donor"].unique())
     for pair, color in colors.items():
         sub = draws[draws["pair"] == pair]
         s = sub.groupby("cells_per_donor")["auroc_median"].agg(["median", "min", "max"]).reindex(depths)
@@ -166,7 +153,7 @@ def fig_interferon(out_path):
     cax.tick_params(labelsize=6)
     panel_label(ax, "a")
 
-    # b: IFN-responsive ciliated cells as % of epithelial cells per donor
+
     ax = fig.add_subplot(grid[2])
     pos = ax.get_position()
     ax.set_position([pos.x0 + 0.08, pos.y0, pos.width - 0.08, pos.height])
@@ -204,7 +191,7 @@ def fig_attribution_perturbation(out_path):
 
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.8), gridspec_kw={"width_ratios": [1, 1.3]})
 
-    # a: single-cell-type models (logreg) vs their own permutation null
+
     ax = axes[0]
     sub = celltype[(celltype["model"] == "logreg") & celltype["n_donors"].notna()]
     for i, (_, r) in enumerate(sub.iterrows()):
@@ -224,7 +211,7 @@ def fig_attribution_perturbation(out_path):
     clean(ax)
     panel_label(ax, "a")
 
-    # b: perturbation, severe -> mild, alpha = 1: single gene vs module, top meaningful genes
+
     ax = axes[1]
     ranked = targets[targets["meaningful_perturbation"]].copy()
     ranked["abs"] = ranked["perturb_mean_delta_p"].abs()
